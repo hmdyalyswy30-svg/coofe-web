@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>كافيه البن الأخضر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="logo">البن الأخضر</a>
+    <nav aria-label="القائمة الرئيسية">
+      <ul>
+        <li><a href="#menu">المنيو</a></li>
+        <li><a href="#about">عنّا</a></li>
+        <li><a href="#book">احجز طاولة</a></li>
+      </ul>
+    </nav>
+    <button class="cart-btn" id="openCart" aria-label="فتح السلة">السلة<span id="count">0</span></button>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1>قهوتك على أصولها</h1>
+        <p>بن محمّص طازة كل يوم، ومشروبات تتعمل على إيدين باريستا بيحب شغله. تعالى اقعد، واطلب اللي يعجبك.</p>
+        <a class="btn" href="#menu">شوف المنيو</a>
+      </div>
+      <svg class="cup" viewBox="0 0 200 200" role="img" aria-label="فنجان قهوة">
+        <g class="steam"><path d="M80 60 q-10 -14 0 -28"/><path d="M100 60 q-10 -14 0 -28"/><path d="M120 60 q-10 -14 0 -28"/></g>
+        <path d="M45 80 h110 v40 a55 45 0 0 1 -110 0z" fill="#fff"/>
+        <path d="M155 92 h14 a16 16 0 0 1 0 32 h-18" fill="none" stroke="#fff" stroke-width="10"/>
+        <ellipse cx="100" cy="80" rx="55" ry="10" fill="#d9a066"/>
+        <ellipse cx="100" cy="172" rx="70" ry="8" fill="#4a3123"/>
+      </svg>
+    </div>
+  </div>
+
+  <section id="menu">
+    <div class="wrap">
+      <h2 class="title">المنيو</h2>
+      <p class="sub">الأسعار بالجنيه المصري.</p>
+      <div class="tabs" role="group" aria-label="تصنيفات المنيو" id="tabs"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <div>
+        <h2 class="title">حكايتنا</h2>
+        <p>بدأنا بماكينة إسبريسو واحدة وركن صغير، واليوم بقينا مكان بيجمع الأصحاب والشغل والدراسة.</p>
+        <p>بنختار البن من مزارع موثوقة ونحمّصه عندنا، وكل كوباية بتتحضّر لحد ما تطلع زي ما إحنا عايزينها.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><b>مواعيد العمل</b>كل يوم من 8 الصبح لـ 12 بالليل</div>
+        <div class="fact"><b>العنوان</b>شارع البحر، دمياط</div>
+        <div class="fact"><b>الموبايل</b><span dir="ltr">0100 000 0000</span></div>
+        <div class="fact"><b>واي فاي</b>مجاني لكل الزباين</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="book">
+    <div class="wrap">
+      <h2 class="title">احجز طاولة</h2>
+      <p class="sub">اكتب بياناتك وهنأكد معاك على الموبايل.</p>
+      <form id="form" novalidate>
+        <label>الاسم<input id="name" required><span class="err" id="e-name"></span></label>
+        <label>رقم الموبايل<input id="phone" type="tel" dir="ltr" placeholder="01xxxxxxxxx" required><span class="err" id="e-phone"></span></label>
+        <div class="two">
+          <label>اليوم<input id="date" type="date" required><span class="err" id="e-date"></span></label>
+          <label>عدد الأفراد
+            <select id="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
+          </label>
+        </div>
+        <button class="btn" type="submit">احجز دلوقتي</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">© <span id="year"></span> كافيه البن الأخضر. كل الحقوق محفوظة.</div></footer>
+
+<aside class="drawer" id="drawer" aria-label="السلة" aria-hidden="true">
+  <button class="close" id="closeCart" aria-label="إغلاق">×</button>
+  <h2>طلبك</h2>
+  <ul id="cartList"></ul>
+  <div class="total">الإجمالي: <span id="total">0</span> ج.م</div>
+  <button class="btn" id="checkout">أكّد الطلب</button>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const MENU = [
+  {n:"إسبريسو",d:"شوت مركّز من بن محمّص غامق",p:45,c:"قهوة",t:"cup",col:"#2a170d"},
+  {n:"قهوة تركي",d:"على الرمل، سادة أو مظبوط",p:40,c:"قهوة",t:"cup",col:"#3b2417"},
+  {n:"كابتشينو",d:"إسبريسو مع حليب وفوم كثيف",p:65,c:"قهوة",t:"cup",col:"#c9a27a"},
+  {n:"لاتيه",d:"ناعم وخفيف بحليب مبخّر",p:70,c:"قهوة",t:"cup",col:"#d2b08a"},
+  {n:"آيس كوفي",d:"قهوة مثلّجة مع حليب وكراميل",p:75,c:"باردة",t:"glass",col:"#a67c52"},
+  {n:"موهيتو ليمون",d:"ليمون ونعناع وصودا",p:60,c:"باردة",t:"glass",col:"#d6dca0"},
+  {n:"سموذي مانجو",d:"مانجو طازة مع زبادي",p:70,c:"باردة",t:"glass",col:"#efb64f"},
+  {n:"شاي بالنعناع",d:"شاي أسود مع نعناع طازة",p:30,c:"سخنة",t:"cup",col:"#a8561f"},
+  {n:"قرفة بالحليب",d:"مشروب دافي بالقرفة والمكسرات",p:55,c:"سخنة",t:"cup",col:"#c8a27c"},
+  {n:"كرواسون بالزبدة",d:"مخبوز الصبح، مقرمش من بره",p:50,c:"حلويات",t:"croissant"},
+  {n:"تشيز كيك",d:"بصوص التوت",p:85,c:"حلويات",t:"cake",col:"#9c3d3a"},
+  {n:"براونيز",d:"شوكولاتة غامقة مع جوز",p:65,c:"حلويات",t:"brownie"}
+];
+// رسومات المنتجات (SVG). لو عندك صور حقيقية ضيف img:"images/اسم.jpg" في المنتج وهتظهر بدل الرسمة
+const SH = '<ellipse cx="100" cy="136" rx="62" ry="7" fill="#3b2417" opacity=".14"/>';
+const ART = {
+  cup: c => `<svg viewBox="0 0 200 150" aria-hidden="true">${SH}<ellipse cx="100" cy="128" rx="68" ry="8" fill="#e9dcc9"/><path d="M55 55h90v34a45 38 0 0 1-90 0z" fill="#fffaf2"/><path d="M145 65h9a14 14 0 0 1 0 28h-13" fill="none" stroke="#fffaf2" stroke-width="8"/><ellipse cx="100" cy="55" rx="45" ry="9" fill="${c}"/><path d="M88 40q-8-10 0-20M104 40q-8-10 0-20M120 40q-8-10 0-20" stroke="#7a6252" stroke-width="4" fill="none" stroke-linecap="round" opacity=".45"/></svg>`,
+  glass: c => `<svg viewBox="0 0 200 150" aria-hidden="true">${SH}<path d="M65 30h70l-8 92a8 8 0 0 1-8 7H81a8 8 0 0 1-8-7z" fill="#fffaf2" fill-opacity=".6" stroke="#c9b49a" stroke-width="3"/><path d="M69 52h62l-5 68a6 6 0 0 1-6 5H80a6 6 0 0 1-6-5z" fill="${c}"/><rect x="82" y="62" width="22" height="22" rx="4" fill="#fff" opacity=".45" transform="rotate(12 93 73)"/><rect x="104" y="84" width="20" height="20" rx="4" fill="#fff" opacity=".4" transform="rotate(-10 114 94)"/><path d="M110 8l-7 72" stroke="#6f4e37" stroke-width="6" stroke-linecap="round"/></svg>`,
+  cake: c => `<svg viewBox="0 0 200 150" aria-hidden="true">${SH}<ellipse cx="100" cy="124" rx="74" ry="9" fill="#e9dcc9"/><rect x="50" y="98" width="100" height="18" rx="4" fill="#a8764a"/><rect x="50" y="64" width="100" height="36" fill="#f6e7c8"/><rect x="50" y="54" width="100" height="14" rx="7" fill="${c}"/><circle cx="82" cy="50" r="7" fill="${c}"/><circle cx="104" cy="47" r="7" fill="${c}"/><circle cx="124" cy="51" r="6" fill="${c}"/></svg>`,
+  croissant: () => `<svg viewBox="0 0 200 150" aria-hidden="true">${SH}<g transform="translate(100 82)"><ellipse rx="26" ry="32" fill="#d9a066"/><ellipse cx="-34" cy="10" rx="20" ry="26" transform="rotate(25 -34 10)" fill="#c88a4d"/><ellipse cx="34" cy="10" rx="20" ry="26" transform="rotate(-25 34 10)" fill="#c88a4d"/><ellipse cx="-58" cy="32" rx="14" ry="19" transform="rotate(48 -58 32)" fill="#b8763d"/><ellipse cx="58" cy="32" rx="14" ry="19" transform="rotate(-48 58 32)" fill="#b8763d"/><path d="M-12-22q4 22 0 44M12-22q-4 22 0 44" stroke="#a96b35" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg>`,
+  brownie: () => `<svg viewBox="0 0 200 150" aria-hidden="true">${SH}<rect x="70" y="52" width="84" height="54" rx="7" fill="#3f2415"/><rect x="48" y="70" width="84" height="54" rx="7" fill="#4a2c1a"/><rect x="48" y="70" width="84" height="13" rx="7" fill="#6b4128"/><circle cx="72" cy="77" r="6" fill="#c9a27a"/><circle cx="108" cy="79" r="5" fill="#c9a27a"/><circle cx="90" cy="96" r="3" fill="#6b4128"/><circle cx="112" cy="106" r="3" fill="#6b4128"/></svg>`
+};
+const pic = m => m.img
+  ? `<img src="${m.img}" alt="${m.n}" loading="lazy">`
+  : ART[m.t](m.col);
+const cats = ["الكل", ...new Set(MENU.map(m => m.c))];
+let active = "الكل", cart = [];
+const $ = id => document.getElementById(id);
+
+function renderTabs(){
+  $("tabs").innerHTML = cats.map(c =>
+    `<button class="tab" aria-pressed="${c===active}" data-c="${c}">${c}</button>`).join("");
+}
+function renderMenu(){
+  const list = MENU.map((m,i)=>({...m,i})).filter(m => active==="الكل" || m.c===active);
+  $("grid").innerHTML = list.map(m => `
+    <article class="item">
+      <div class="pic">${pic(m)}</div>
+      <h3>${m.n}</h3><p>${m.d}</p>
+      <div class="row"><span class="price">${m.p} ج.م</span>
+      <button class="add" data-i="${m.i}">أضف</button></div>
+    </article>`).join("");
+}
+function renderCart(){
+  $("count").textContent = cart.length;
+  $("cartList").innerHTML = cart.length
+    ? cart.map((m,k)=>`<li><span>${m.n} — ${m.p} ج.م</span><button data-k="${k}">حذف</button></li>`).join("")
+    : "<li>السلة فاضية. أضف حاجة من المنيو.</li>";
+  $("total").textContent = cart.reduce((s,m)=>s+m.p,0);
+}
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.t); toast.t = setTimeout(()=>t.classList.remove("show"),2500);
+}
+function drawer(open){
+  $("drawer").classList.toggle("open",open);
+  $("drawer").setAttribute("aria-hidden",!open);
+}
+
+$("tabs").onclick = e => { const c = e.target.dataset.c; if(c){active=c;renderTabs();renderMenu();} };
+$("grid").onclick = e => {
+  const i = e.target.dataset.i; if(i===undefined) return;
+  cart.push(MENU[i]); renderCart(); toast(`تمت إضافة ${MENU[i].n}`);
+};
+$("cartList").onclick = e => { const k = e.target.dataset.k; if(k!==undefined){cart.splice(k,1);renderCart();} };
+$("openCart").onclick = () => drawer(true);
+$("closeCart").onclick = () => drawer(false);
+document.addEventListener("click", e => { if($("drawer").classList.contains("open") && !e.target.closest("#drawer, #openCart, .add, #cartList")) drawer(false); });
+document.addEventListener("keydown", e => { if(e.key==="Escape") drawer(false); });
+$("checkout").onclick = () => {
+  if(!cart.length) return toast("السلة فاضية");
+  cart = []; renderCart(); drawer(false); toast("تم تأكيد الطلب، شكرًا ليك!");
+};
+
+// booking form
+$("date").min = new Date().toISOString().split("T")[0];
+$("form").onsubmit = e => {
+  e.preventDefault();
+  const name = $("name").value.trim(), phone = $("phone").value.trim(), date = $("date").value;
+  const errs = {
+    name: name.length < 2 ? "اكتب اسمك" : "",
+    phone: /^01[0125]\d{8}$/.test(phone) ? "" : "اكتب رقم موبايل مصري صحيح (11 رقم)",
+    date: date ? "" : "اختار اليوم"
+  };
+  for(const k in errs) $("e-"+k).textContent = errs[k];
+  if(Object.values(errs).some(Boolean)) return;
+  e.target.reset();
+  toast(`تم الحجز يا ${name}، هنكلمك للتأكيد`);
+};
+
+$("year").textContent = new Date().getFullYear();
+renderTabs(); renderMenu(); renderCart();
+</script>
+</body>
+</html>
